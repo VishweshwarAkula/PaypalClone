@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import supabase from '../supabase-client';
 import { Loading } from "./Loading";
 
 export function PaymentPopup({ user, currentUserEmail, currentBalance, onClose, onPaymentComplete }) {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [amount, setAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -55,6 +57,7 @@ export function PaymentPopup({ user, currentUserEmail, currentBalance, onClose, 
       if (recipientError) throw new Error(recipientError.message);
       handleClose();
       onPaymentComplete();
+      navigate('/home', { replace: true });
     } catch (err) {
       setError("Failed to process payment. Please try again.");
       console.error("Payment error:", err);
